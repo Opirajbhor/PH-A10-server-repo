@@ -29,6 +29,9 @@ async function run() {
     await client.connect();
     const db = client.db("PH-A10");
     const allIssues = db.collection("allIssues");
+    const contribution = db.collection("contribution");
+
+    // ------------------------------------------------------
 
     // get
     app.get("/allIssues", async (req, res) => {
@@ -39,7 +42,21 @@ async function run() {
         res.status(500).json({ success: false, error: "Failed to fetch data" });
       }
     });
+    // get - latest 6 data
+    app.get("/latestissues", async (req, res) => {
+      try {
+        const result = await allIssues
+          .find()
+          .sort({ _id: 1 })
+          .limit(6)
+          .toArray();
+        res.status(200).json(result);
+      } catch (error) {
+        res.status(500).json({ success: false, error: "Failed to fetch data" });
+      }
+    });
 
+    // ---------------------------------------------------------
     // post
     app.post("/allIssues", async (req, res) => {
       try {
@@ -51,8 +68,21 @@ async function run() {
         console.log("error", error);
       }
     });
+    // post contribution data
+    app.post("/contribution", async (req, res) => {
+      try {
+        const data = req.body;
+        const result = await contribution.insertOne(data);
+        res.send(result);
+        console.log("data", data);
+      } catch (error) {
+        console.log("error", error);
+      }
+    });
 
-    // patch
+    // ------------------------------------------------------
+
+    // patch - update
     app.patch("/allIssues/:id", async (req, res) => {
       try {
         const id = req.params.id;
@@ -67,12 +97,10 @@ async function run() {
             .status(200)
             .json({ success: true, message: "Issue updated successfully" });
         } else {
-          res
-            .status(404)
-            .json({
-              success: false,
-              message: "Issue not found or no changes made",
-            });
+          res.status(404).json({
+            success: false,
+            message: "Issue not found or no changes made",
+          });
         }
       } catch (error) {
         console.error("error updating issue", error);
@@ -81,6 +109,8 @@ async function run() {
           .json({ success: false, error: "failed to udpate data" });
       }
     });
+
+    // ------------------------------------------------------
 
     // delete
     app.delete("/allIssues/:id", async (req, res) => {
@@ -110,6 +140,8 @@ async function run() {
   } finally {
   }
 }
+// ------------------------------------------------------
+
 run().catch(console.dir);
 // ---------------
 
