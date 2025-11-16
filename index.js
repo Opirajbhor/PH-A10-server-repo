@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const serverless = require("serverless-http")
 
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
@@ -13,7 +14,7 @@ app.use(express.json());
 
 // database connect
 // connectDB();
-const uri = "mongodb+srv://opiraj:gTbxZLpyganHcYsa@ph-a10.xde5abd.mongodb.net";
+const uri = process.env.MONGO_URI;
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -158,6 +159,7 @@ app.get("/", (req, res) => {
   res.send("Hello World! ");
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Example app listening on port ${port}`);
+// });
+export default serverless(app);
