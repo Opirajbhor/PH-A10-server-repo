@@ -55,6 +55,15 @@ async function run() {
         res.status(500).json({ success: false, error: "Failed to fetch data" });
       }
     });
+    // get-contribution api
+    app.get("/contribution", async (req, res) => {
+      try {
+        const result = await contribution.find().toArray();
+        res.status(200).json(result);
+      } catch (error) {
+        res.status(500).json({ success: false, error: "Failed to fetch data" });
+      }
+    });
 
     // ---------------------------------------------------------
     // post
