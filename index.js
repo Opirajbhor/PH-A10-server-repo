@@ -36,7 +36,7 @@ async function run() {
     // ------------------------------------------------------
 
     // get
-    app.get("/api/allIssues", async (req, res) => {
+    app.get("/allIssues", async (req, res) => {
       try {
         const result = await allIssues.find().toArray();
         res.status(200).json(result);
@@ -149,6 +149,9 @@ async function run() {
     await client.db("admin").command({ ping: 1 });
     console.log("connected db", { port });
   } finally {
+    app.listen(port, () => {
+      console.log(`Example app listening on port ${port}`);
+    });
   }
 }
 // ------------------------------------------------------
@@ -160,9 +163,5 @@ app.get("/", (req, res) => {
   res.send("Hello World! ");
 });
 
-// app.listen(port, () => {
-//   console.log(`Example app listening on port ${port}`);
-// });
-
 // module.exports = app;
-export default serverless(app);
+// export default serverless(app);
