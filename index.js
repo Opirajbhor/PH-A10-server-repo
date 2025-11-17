@@ -160,12 +160,12 @@ app.get("/", (req, res) => {
   res.send("Hello World! ");
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Example app listening on port ${port}`);
+// });
 // if (process.env.NODE_ENV !== "production") {
 //   app.listen(port, () => {
 //     console.log(`Server running on http://localhost:${port}`);
 //   });
 // }
-// export default serverless(app);
+export default serverless(app);
