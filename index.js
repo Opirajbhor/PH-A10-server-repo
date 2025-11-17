@@ -1,10 +1,11 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const serverless = require("serverless-http")
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import serverless from "serverless-http";
+import { MongoClient, ServerApiVersion, ObjectId } from "mongodb";
+import dotenv from "dotenv";
 
-const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
-require("dotenv").config();
+dotenv.config();
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -146,7 +147,7 @@ async function run() {
     });
 
     await client.db("admin").command({ ping: 1 });
-    console.log("connected db");
+    console.log("connected db", { port });
   } finally {
   }
 }
@@ -159,7 +160,12 @@ app.get("/", (req, res) => {
   res.send("Hello World! ");
 });
 
-// app.listen(port, () => {
-//   console.log(`Example app listening on port ${port}`);
-// });
-export default serverless(app);
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
+});
+// if (process.env.NODE_ENV !== "production") {
+//   app.listen(port, () => {
+//     console.log(`Server running on http://localhost:${port}`);
+//   });
+// }
+// export default serverless(app);
