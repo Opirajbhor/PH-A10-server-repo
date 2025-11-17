@@ -36,7 +36,7 @@ async function run() {
     // ------------------------------------------------------
 
     // get
-    app.get("/allIssues", async (req, res) => {
+    app.get("/api/allIssues", async (req, res) => {
       try {
         const result = await allIssues.find().toArray();
         res.status(200).json(result);
@@ -164,5 +164,5 @@ app.get("/", (req, res) => {
 //   console.log(`Example app listening on port ${port}`);
 // });
 
-module.exports = app;
-// export default serverless(app);
+// module.exports = app;
+export default serverless(app);
